@@ -1,0 +1,1 @@
+adb install ./MAX-aligned-signed.apk
