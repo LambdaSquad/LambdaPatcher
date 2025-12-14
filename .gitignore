@@ -6,3 +6,5 @@ MAX-aligned-signed.apk
 MAX-aligned-signed.apk.idsig
 keys.keystore
 maxorig.apk
+key.properties
+komet-key.jks

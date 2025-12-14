@@ -48,5 +48,7 @@ replacement = [
     ('<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>',''),
     ('<uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>',''),
     ('<uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>',''),
-    ('',''),
+    ('<string name="oneme_appearance_settings_message_incoming_first">Выберите тему, чтобы изменить фон и цвет сообщений 🎨</string>','<string name="oneme_appearance_settings_message_incoming_first">Доброе утро! 👋</string>'),
+    ('<string name="oneme_appearance_settings_message_incoming_second">Меняйте тему в любое время</string>','<string name="oneme_appearance_settings_message_incoming_second">В Токио утро 😎</string>'),
+    ('<string name="oneme_appearance_settings_message_outgoing_new">Посмотрите, как с ней будут выглядеть ваши чаты</string>','<string name="oneme_appearance_settings_message_outgoing_new">Знаешь, который час?</string>')
 ]
