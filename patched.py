@@ -1,4 +1,4 @@
-version = "1.2"
+version = "1.2.3"
 replacement = [
     ('<string name="tracer_app_token">t6QnlHov0Gq1UBGYG9GPqZu0EiVMZ922FKvwyAEASa90</string>','<string name="tracer_app_token"></string>'),
     ('<string name="oneme_faq_link">https://help.max.ru</string>',f'<string name="oneme_faq_link">https://ivan2282-i28.github.io/somestuff/openmaxpatch.html?version={version}</string>'),
@@ -7,27 +7,17 @@ replacement = [
     ('<string name="oneme_appearance_settings_message_outgoing">Хорошо, а у тебя?</string>',f'<string name="oneme_appearance_settings_message_outgoing">Я использую MaxPatched v{version} от i28PatcherMan:3</string>'),
     ('<string name="force_update_subtitle">Писать и звонить в этой версии не получится. Обновите приложение, чтобы продолжить использовать MAX</string>','<string name="force_update_subtitle">Сервера MAX отказываются обслуживать клиент! Обновите MaxPatched, чтобы продолжить использовать MAX, если это последняя версия MaxPatched сообщите разработчику:3</string>'),
     ('<string name="force_update_title">Ваша версия MAX устарела</string>','<string name="force_update_title">Ваша версия MaxPatched устарела бегом в @LambdaSquad в тг>:3</string>'),
-    ('<string name="status_bar_notification_info_overflow">999+</string>','<string name="status_bar_notification_info_overflow">100-7</string>'),
-    ('<string name="tt_email_invite_subject">Ставь Max!</string>','<string name="tt_email_invite_subject">НЕ СТАВЬ Max! А если приспичело то MaxPatched by LambdaSquad</string>'),
     ('<string name="oneme_setting_item_dev_menu">Dev меню</string>','<string name="oneme_setting_item_dev_menu">DEVλMENU</string>'),
     ('<string name="oneme_login_welcome_terms">Нажимая «Продолжить», вы принимаете политику конфиденциальности и пользовательское соглашение</string>','<string name="oneme_login_welcome_terms">Нажимая «Продолжить», вы принимаете политику конфиденциальности и пользовательское соглашение, Правила MPIPM <a href="https://ivan2282-i28.github.io/somestuff/MPIPM_rules.html">(https://ivan2282-i28.github.io/somestuff/MPIPM_rules.html)</a></string>'),
     ('<string name="oneme_login_input_description">На него придёт СМС с кодом</string>','<string name="oneme_login_input_description">Вы используете неофициальную версию MaxPatched by λLambda Squad! На него придёт СМС с кодом.</string>'),
     # ('<string name="oneme_app_name">MAX</string>','<string name="oneme_app_name">MaxPatched</string>'),
     ('<string name="oneme_invite_by_phone_hint_default">123 456-78-90</string>','<string name="oneme_invite_by_phone_hint_default">Пригласить кого и куда?</string>'),
     ('<string name="oneme_login_input_default_phone_hint">123 456-78-90</string>','<string name="oneme_login_input_default_phone_hint">Ваш номер телефона сюда писать опасно</string>'),
-    ('О приложении','λLambda Squad'),
     ('const-string p2, ":settings/aboutapp"','const-string p2, ":settings/magic-room"'),
     ('Dev menu','DEV [λLambda Squad]'),
+    ('О приложении','λDev menu'),
     ('apptracer.ru','trck.i28patcherman.local'),
     ('vk-analytics.ru','vkanal.i28patcherman.local'),
-    ('sget-object v0, Lpcd;->q0:Lpcd;',
-'''    sget-object v0, Lpcd;->s0:Lpcd;
-
-    invoke-virtual {p0, v0}, Lrm7;->add(Ljava/lang/Object;)Z
-
-    sget-object v0, Lpcd;->q0:Lpcd;'''
-# sget-object v0, Lecd;->q0:Lecd;'''
-    ),
     ('<uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>',''),
     ('<uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>',''),
     ('<uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>',''),
