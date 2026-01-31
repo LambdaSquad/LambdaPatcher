@@ -4,6 +4,9 @@ import os
 import argparse
 import subprocess
 import logging
+import json
+import urllib.request
+import urllib.error
 from pathlib import Path
 from patched import replacement
 from config import KS_PATH, KS_ALIAS, KS_PASS
@@ -40,18 +43,84 @@ def run_command(command, description):
         return False
     return True
 
+def download_apk(output_path="output.apk"):
+    """Fetches the APK download link from RuStore and saves the file using built-in libs."""
+    api_url = "https://backapi.rustore.ru/applicationData/v2/download-link"
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:147.0) Gecko/20100101 Firefox/147.0",
+        "Accept": "*/*",
+        "Content-Type": "application/json",
+    }
+    
+    payload = {
+        "appId": 2063618637,
+        "firstInstall": True,
+        "mobileServices": [],
+        "supportedAbis": ["x86_64", "arm64-v8a", "x86", "armeabi-v7a", "armeabi"],
+        "screenDensity": 0,
+        "supportedLocales": ["ru_RU"],
+        "sdkVersion": 26,
+        "withoutSplits": True,
+        "signatureFingerprint": None
+    }
+
+    try:
+        # 1. Request the download URL
+        logger.info("Requesting download URL from RuStore...")
+        json_data = json.dumps(payload).encode('utf-8')
+        req = urllib.request.Request(api_url, data=json_data, headers=headers, method='POST')
+        
+        with urllib.request.urlopen(req) as response:
+            res_body = response.read().decode('utf-8')
+            data = json.loads(res_body)
+        
+        # 2. Extract APK URL
+        apk_url = data['body']['downloadUrls'][0]['url']
+        logger.info(f"Downloading APK from: {apk_url}")
+
+        # 3. Download the file in chunks
+        # Using a secondary Request for the file download to maintain User-Agent if needed
+        file_req = urllib.request.Request(apk_url, headers={"User-Agent": headers["User-Agent"]})
+        with urllib.request.urlopen(file_req) as response, open(output_path, 'wb') as out_file:
+            while True:
+                chunk = response.read(8192) # 8KB chunks
+                if not chunk:
+                    break
+                out_file.write(chunk)
+        
+        logger.info(f"Successfully saved to {output_path}")
+
+    except urllib.error.URLError as e:
+        logger.error(f"Network error: {e}")
+        return False
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
+        return False
+    return True
 def main():
     parser = argparse.ArgumentParser(description='Decompile, patch, and rebuild APK.')
     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose output')
+    parser.add_argument('-d', '--download', action='store_true', help='Download original APK')
     args = parser.parse_args()
 
     if args.verbose:
         logger.setLevel(logging.DEBUG)
+    if args.download:
+        if download_apk("original.apk"):
+            logger.info("APK downloaded successfully.")
+        else:
+            logger.error("Failed to download APK.")
+        return
 
-    if os.path.exists("original"):
-        shutil.rmtree("original")
-
-    if not run_command("./bin/apktool d original.apk", "Decompiling APK"):
+    for i in ['original', 'output.apk', 'output-aligned.apk', 'output-aligned-signed.apk', 'output-aligned-signed.apk.idsig']:
+        if os.path.exists(i):
+            shutil.rmtree(i) if os.path.isdir(i) else os.remove(i)
+    if os.name == 'nt':
+        decompile_cmd = "./bin/apktool.bat d original.apk"
+    else:
+        decompile_cmd = "./bin/apktool d original.apk"
+    if not run_command(decompile_cmd, "Decompiling APK"):
         return
 
     modified_count = 0
@@ -70,17 +139,23 @@ def main():
     if os.path.exists('./replace'):
         shutil.copytree('./replace', './original', dirs_exist_ok=True)
 
-
-    build_cmd = "./bin/apktool b ./original -o ./output.apk"
+    if os.name == 'nt':
+        build_cmd = "./bin/apktool.bat b ./original -o ./output.apk"
+    else:
+        build_cmd = "./bin/apktool b ./original -o ./output.apk"
     sign_cmd = (
         "java -jar ./bin/uber-apk-signer.jar --apks ./output.apk "
-        f"--ks {KS_PATH} --ksAlias {KS_ALIAS} --ksPass {KS_PASS}"
+        f"--ks {KS_PATH} --ksAlias {KS_ALIAS} --ksPass {KS_PASS} --ksKeyPass {KS_PASS}"
     )
 
     if run_command(build_cmd, "Rebuilding APK"):
         if os.path.exists("original"):
             shutil.rmtree("original")
-        run_command(sign_cmd, "Signing APK")
+        if run_command(sign_cmd, "Signing APK"):
+            logger.info("APK successfully rebuilt and signed: output-aligned-signed.apk")
+            for i in ['original', 'output.apk', 'output-aligned.apk', 'output-aligned-signed.apk', 'output-aligned-signed.apk.idsig']:
+                if os.path.exists(i):
+                    shutil.rmtree(i) if os.path.isdir(i) else os.remove(i)
 
 if __name__ == '__main__':
     main()

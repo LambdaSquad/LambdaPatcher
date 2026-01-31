@@ -2,6 +2,7 @@ original/
 __pycache__/
 *.log
 output.apk
+output-aligned.apk
 output-aligned-signed.apk
 output-aligned-signed.apk.idsig
 keys.keystore
