@@ -1,1 +1,0 @@
-./apktool b ./MAX -o ./MAX.apk

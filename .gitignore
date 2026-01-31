@@ -1,8 +1,11 @@
-MAX/
+original/
 __pycache__/
 *.log
-MAX.apk
-MAX-aligned-signed.apk
-MAX-aligned-signed.apk.idsig
+output.apk
+output-aligned-signed.apk
+output-aligned-signed.apk.idsig
 keys.keystore
-maxorig.apk
+original.apk
+replace/
+patched.py
+config.py

@@ -1,1 +1,0 @@
-yes 123456 | java -jar ./uber-apk-signer.jar --apks ./MAX.apk --ks ./keys.keystore --ksAlias ivan2282PatcherMan
