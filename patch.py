@@ -77,6 +77,8 @@ def download_apk(output_path="output.apk"):
         
         # 2. Extract APK URL
         apk_url = data['body']['downloadUrls'][0]['url']
+        apk_version = data['body']['versionCode']
+        logger.info(f"Downloading APK version {apk_version}")
         logger.info(f"Downloading APK from: {apk_url}")
 
         # 3. Download the file in chunks
@@ -153,7 +155,7 @@ def main():
             shutil.rmtree("original")
         if run_command(sign_cmd, "Signing APK"):
             logger.info("APK successfully rebuilt and signed: output-aligned-signed.apk")
-            for i in ['original', 'output.apk', 'output-aligned.apk', 'output-aligned-signed.apk', 'output-aligned-signed.apk.idsig']:
+            for i in ['original', 'output.apk', 'output-aligned.apk', 'output-aligned-signed.apk.idsig']:
                 if os.path.exists(i):
                     shutil.rmtree(i) if os.path.isdir(i) else os.remove(i)
 
