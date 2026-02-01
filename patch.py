@@ -104,6 +104,7 @@ def main():
     parser = argparse.ArgumentParser(description='Decompile, patch, and rebuild APK.')
     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose output')
     parser.add_argument('-d', '--download', action='store_true', help='Download original APK')
+    parser.add_argument('-k', '--keep-temp-files', action='store_true', help='Keep temporary files after patching')
     args = parser.parse_args()
 
     if args.verbose:
@@ -155,9 +156,10 @@ def main():
             shutil.rmtree("original")
         if run_command(sign_cmd, "Signing APK"):
             logger.info("APK successfully rebuilt and signed: output-aligned-signed.apk")
-            for i in ['original', 'output.apk', 'output-aligned.apk', 'output-aligned-signed.apk.idsig']:
-                if os.path.exists(i):
-                    shutil.rmtree(i) if os.path.isdir(i) else os.remove(i)
+            if not args.keep_temp_files:
+                for i in ['original', 'output.apk', 'output-aligned.apk', 'output-aligned-signed.apk.idsig']:
+                    if os.path.exists(i):
+                        shutil.rmtree(i) if os.path.isdir(i) else os.remove(i)
 
 if __name__ == '__main__':
     main()
