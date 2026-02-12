@@ -152,8 +152,6 @@ def main():
     )
 
     if run_command(build_cmd, "Rebuilding APK"):
-        if os.path.exists("original"):
-            shutil.rmtree("original")
         if run_command(sign_cmd, "Signing APK"):
             logger.info("APK successfully rebuilt and signed: output-aligned-signed.apk")
             if not args.keep_temp_files:
