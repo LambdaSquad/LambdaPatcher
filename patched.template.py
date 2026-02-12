@@ -1,4 +1,4 @@
-version = "1.2.3"
+version = "1.2.5.1"
 replacement = [
     ('<string name="tracer_app_token">t6QnlHov0Gq1UBGYG9GPqZu0EiVMZ922FKvwyAEASa90</string>','<string name="tracer_app_token"></string>'),
     ('<string name="oneme_faq_link">https://help.max.ru</string>',f'<string name="oneme_faq_link">https://ivan2282-i28.github.io/somestuff/openmaxpatch.html?version={version}</string>'),
@@ -38,5 +38,11 @@ replacement = [
     ('<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>',''),
     ('<uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>',''),
     ('<uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>',''),
-    ('',''),
+    ('</application>','''
+        <provider android:authorities="ru.oneme.app.documents" android:exported="true" android:grantUriPermissions="true" android:name="ru.ivan2282.lambda.CustomDocumentsProvider" android:permission="android.permission.MANAGE_DOCUMENTS">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER"/>
+            </intent-filter>
+        </provider>
+    </application>'''),
 ]
